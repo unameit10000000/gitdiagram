@@ -10,6 +10,7 @@ vi.mock("../github-auth", () => ({
   getGitHubApiHeaders: async ({ githubPat }: { githubPat?: string }) => ({
     Authorization: `Bearer ${githubPat ?? "public-server-token"}`,
   }),
+  serverCredentialsAuthorizePrivateAccess: () => false,
 }));
 afterEach(() => vi.unstubAllGlobals());
 const source = "export const main = 1;";

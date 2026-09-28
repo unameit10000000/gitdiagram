@@ -56,6 +56,8 @@ const MODEL_PRICING: Record<string, ModelPricing> = {
   "gpt-5-mini": { inputPerMillionUsd: 0.25, outputPerMillionUsd: 2.0 },
   "gpt-5-nano": { inputPerMillionUsd: 0.05, outputPerMillionUsd: 0.4 },
   "o4-mini": { inputPerMillionUsd: 1.1, outputPerMillionUsd: 4.4 },
+
+  "deepseek-v4-flash-0731": { inputPerMillionUsd: 0.14, outputPerMillionUsd: 0.28 },
 };
 // GPT-5.6 and later: cache writes cost 1.25× input and reads 0.1×, and the
 // priority tier doubles both.
@@ -108,6 +110,7 @@ export function resolvePricingModel(model: string): string | null {
   if (withoutDate.startsWith("gpt-5-nano")) return "gpt-5-nano";
   if (withoutDate.startsWith("gpt-5")) return "gpt-5";
   if (withoutDate.startsWith("o4-mini")) return "o4-mini";
+  if (withoutDate.startsWith("deepseek-v4-flash")) return "deepseek-v4-flash-0731";
 
   return null;
 }

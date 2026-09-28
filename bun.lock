@@ -57,23 +57,17 @@
   "trustedDependencies": [
     "ffmpeg-static",
   ],
-  "patchedDependencies": {
-    "minimatch@3.1.5": "patches/minimatch@3.1.5.patch",
-  },
   "overrides": {
     "@babel/core": "7.29.7",
     "ajv": "6.15.0",
     "brace-expansion": "5.0.9",
     "browserslist": "4.28.8",
-    "dompurify": "3.4.16",
     "esbuild": "0.28.1",
-    "eslint": "10.11.0",
     "fflate": "0.4.9",
     "flatted": "3.4.2",
     "lodash-es": "^4.18.1",
     "minimatch@<4": "3.1.5",
     "picomatch@<3": "2.3.2",
-    "postcss": "8.5.28",
     "rollup": "4.62.2",
     "sharp": "0.35.4",
     "undici": "8.11.2",
@@ -1926,6 +1920,8 @@
     "is-bun-module/semver": ["semver@7.8.5", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA=="],
 
     "micromatch/picomatch": ["picomatch@2.3.2", "", {}, "sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA=="],
+
+    "next/postcss": ["postcss@8.5.23", "", { "dependencies": { "nanoid": "^3.3.16", "picocolors": "^1.1.1", "source-map-js": "^1.2.1" } }, "sha512-g50586zr4bZmwFiTlflMu8E0bDTb5I5gertgwAKmsdUlTQIhZtunzUlD1WSzwcVWPoAVpsrA6vlfCD7oXvRwgg=="],
 
     "prop-types/react-is": ["react-is@16.13.1", "", {}, "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="],
 

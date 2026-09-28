@@ -1,11 +1,14 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-const { getGitHubApiHeaders } = vi.hoisted(() => ({
-  getGitHubApiHeaders: vi.fn(),
-}));
+const { getGitHubApiHeaders, serverCredentialsAuthorizePrivateAccess } =
+  vi.hoisted(() => ({
+    getGitHubApiHeaders: vi.fn(),
+    serverCredentialsAuthorizePrivateAccess: vi.fn(() => false),
+  }));
 
 vi.mock("~/server/github-auth", () => ({
   getGitHubApiHeaders,
+  serverCredentialsAuthorizePrivateAccess,
 }));
 
 import {

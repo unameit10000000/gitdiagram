@@ -191,3 +191,20 @@ export async function getGitHubApiHeaders(options?: {
     "X-GitHub-Api-Version": GITHUB_API_VERSION,
   } as Record<string, string>;
 }
+
+/**
+ * Whether the server's own GitHub credentials (its PAT pool or GitHub App)
+ * may stand in for a caller-supplied token on private repositories. The
+ * hosted service never allows this, but a self-hosted deployment's owner
+ * analyzing their own repositories should not have to paste a token into the
+ * browser. Development always allows it when server credentials exist;
+ * production requires the explicit GITHUB_SERVER_AUTHORIZES_PRIVATE_ACCESS
+ * opt-in.
+ */
+export function serverCredentialsAuthorizePrivateAccess(): boolean {
+  const optedIn =
+    readTrimmedEnv("GITHUB_SERVER_AUTHORIZES_PRIVATE_ACCESS") === "true" ||
+    process.env.NODE_ENV === "development";
+  if (!optedIn) return false;
+  return hasGitHubAppAuth() || readGitHubPatPool().length > 0;
+}

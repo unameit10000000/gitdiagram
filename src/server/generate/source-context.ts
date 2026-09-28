@@ -1,6 +1,9 @@
 import { createHash } from "node:crypto";
 import { excerptSource } from "./source-excerpt";
-import { getGitHubApiHeaders } from "../github-auth";
+import {
+  getGitHubApiHeaders,
+  serverCredentialsAuthorizePrivateAccess,
+} from "../github-auth";
 import type { GithubData, SourceBlob } from "./github";
 import {
   MAX_SOURCE_CHARACTERS,
@@ -135,7 +138,11 @@ export async function fetchSourceContext(params: {
   signal?: AbortSignal;
 }): Promise<SourceContext> {
   params.signal?.throwIfAborted();
-  if (params.githubData.isPrivate && !params.githubPat?.trim())
+  if (
+    params.githubData.isPrivate &&
+    !params.githubPat?.trim() &&
+    !serverCredentialsAuthorizePrivateAccess()
+  )
     throw new Error(
       "A GitHub token is required to analyze a private repository.",
     );

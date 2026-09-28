@@ -2,8 +2,32 @@ import {
   assertLiveStorageAllowedForTests,
   readRequiredEnv,
 } from "~/server/storage/config";
+import {
+  memoryRedisCommand,
+  memoryRedisEval,
+} from "~/server/storage/memory-redis";
 
 const UPSTASH_REQUEST_TIMEOUT_MS = 5_000;
+
+function hasUpstashConfiguration(): boolean {
+  return Boolean(
+    process.env.UPSTASH_REDIS_REST_URL?.trim() &&
+      process.env.UPSTASH_REDIS_REST_TOKEN?.trim(),
+  );
+}
+
+let memoryFallbackLogged = false;
+function logMemoryFallback(): void {
+  if (memoryFallbackLogged) return;
+  memoryFallbackLogged = true;
+  console.warn(
+    JSON.stringify({
+      event: "storage.upstash.in_memory_fallback",
+      message:
+        "UPSTASH_REDIS_REST_URL/TOKEN are not configured; using an in-memory Redis store. State is local to this server process and resets on restart.",
+    }),
+  );
+}
 
 function getBaseUrl() {
   return readRequiredEnv("UPSTASH_REDIS_REST_URL").replace(/\/$/, "");
@@ -50,6 +74,10 @@ async function execute<T>(path: string, body: unknown): Promise<T> {
 }
 
 export async function upstashCommand<T>(command: unknown[]): Promise<T> {
+  if (!hasUpstashConfiguration()) {
+    logMemoryFallback();
+    return memoryRedisCommand(command) as T;
+  }
   return execute<T>("", command);
 }
 
@@ -58,6 +86,10 @@ export async function upstashEval<T>(params: {
   keys?: string[];
   args?: Array<string | number>;
 }): Promise<T> {
+  if (!hasUpstashConfiguration()) {
+    logMemoryFallback();
+    return memoryRedisEval(params) as T;
+  }
   const keys = params.keys ?? [];
   const args = params.args ?? [];
   return execute<T>("", ["EVAL", params.script, keys.length, ...keys, ...args]);
